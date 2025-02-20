@@ -10,6 +10,30 @@ use App\Models\Upload_tugas;
 class Upload_tugasController extends Controller
 {
     /**
+     * Menampilkan semua tugas.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
+    {
+        $tugas = Upload_tugas::all();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar semua tugas',
+            'data' => $tugas->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'judul_tugas' => $item->judul_tugas,
+                    'deskripsi' => $item->deskripsi,
+                    'lampiran' => $item->lampiran ? asset('storage/' . $item->lampiran) : null,
+                    'created_at' => $item->created_at->format('Y-m-d H:i:s'),
+                ];
+            }),
+        ], 200);
+    }
+
+    /**
      * Upload tugas baru.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -20,7 +44,7 @@ class Upload_tugasController extends Controller
         $validated = $request->validate([
             'judul_tugas' => 'required|string|max:255',
             'deskripsi'   => 'nullable|string',
-            'lampiran'    => 'nullable|file|mimes:jpeg,jpg,png,mp4,avi,mov,wmv,pdf|max:20480', 
+            'lampiran'    => 'nullable|file|mimes:jpeg,jpg,png,mp4,avi,mov,wmv,pdf|max:20480',
         ]);
 
         $lampiranPath = null;

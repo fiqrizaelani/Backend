@@ -14,21 +14,24 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::user();
-
+    
         if (!$user) {
             return response()->json([
                 'success' => false,
                 'message' => 'User not authenticated'
             ], 401);
         }
-
+    
         $hour = Carbon::now()->format('H');
         $greeting = $this->getGreetingMessage($hour);
-
+    
         return response()->json([
             'success' => true,
             'message' => "{$greeting}, {$user->name}!",
-            'user'    => $user
+            'user' => [
+                'name'  => $user->name,
+                'email' => $user->email,
+            ]
         ], 200);
     }
 

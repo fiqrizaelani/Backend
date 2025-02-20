@@ -33,4 +33,5 @@ Route::middleware('auth:api')->group(function () {
  Route::post('/kelas/join/{id}', [Gabung_kelasController::class, 'join']);
 
 //  Upload tugas
+Route::get('/upload', [Upload_tugasController::class, 'index']);
 Route::post('/upload/tugas', [Upload_tugasController::class, 'store']);

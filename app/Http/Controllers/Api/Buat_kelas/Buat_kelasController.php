@@ -9,9 +9,12 @@ use App\Models\Buat_kelas;
 class Buat_kelasController extends Controller
 {
     public function index()
-    {
-        return response()->json(Buat_kelas::all(), 200);
-    }
+{
+    $data = Buat_kelas::all();
+    \Log::info($data); // Tambahkan logging
+
+    return response()->json($data, 200);
+}
 
     public function store(Request $request)
     {
